@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}Home - Government Schemes Finder{% endblock %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge"><i class="fas fa-flag"></i> Government of India</div>
+        <h1>Find Government Schemes<br><span class="highlight">You're Eligible For</span></h1>
+        <p>Discover Central and Maharashtra State government schemes tailored to your profile. Check eligibility instantly and access benefits you deserve.</p>
+        <div class="hero-actions">
+            {% if session.user_id %}
+                <a href="{{ url_for('schemes') }}" class="btn btn-primary btn-lg"><i class="fas fa-search"></i> Browse Schemes</a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline btn-lg"><i class="fas fa-user"></i> My Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('signup') }}" class="btn btn-primary btn-lg"><i class="fas fa-user-plus"></i> Get Started Free</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline btn-lg"><i class="fas fa-sign-in-alt"></i> Login</a>
+            {% endif %}
+        </div>
+        <div class="hero-stats">
+            <div class="stat"><span class="stat-num">45+</span><span class="stat-label">Schemes</span></div>
+            <div class="stat"><span class="stat-num">2</span><span class="stat-label">Governments</span></div>
+            <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Categories</span></div>
+        </div>
+    </div>
+    <div class="hero-image">
+        <div class="hero-illustration">
+            <i class="fas fa-landmark hero-icon"></i>
+        </div>
+    </div>
+</section>
+
+<section class="categories-section">
+    <div class="section-header">
+        <h2>Scheme Categories</h2>
+        <p>Explore schemes across multiple categories for Central and Maharashtra Government</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="central">Central Government</button>
+        <button class="tab-btn" data-tab="maharashtra">🏛️ Maharashtra Government</button>
+    </div>
+
+    <div class="tab-content active" id="tab-central">
+        <div class="categories-grid">
+            {% set central_cats = [
+                ('Healthcare & Insurance', 'fa-heartbeat', '#e74c3c', '3 Schemes'),
+                ('Agriculture & Rural Livelihood', 'fa-seedling', '#27ae60', '4 Schemes'),
+                ('Housing & Infrastructure', 'fa-home', '#2980b9', '2 Schemes'),
+                ('Financial Inclusion & Entrepreneurship', 'fa-rupee-sign', '#f39c12', '4 Schemes'),
+                ('Savings & Pensions', 'fa-piggy-bank', '#8e44ad', '3 Schemes')
+            ] %}
+            {% for cat, icon, color, count in central_cats %}
+            <a href="{{ url_for('schemes', state='Central', category=cat) }}" class="category-card" style="--accent: {{ color }}">
+                <div class="cat-icon"><i class="fas {{ icon }}"></i></div>
+                <h3>{{ cat }}</h3>
+                <span class="cat-count">{{ count }}</span>
+                <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab-maharashtra">
+        <div class="categories-grid">
+            {% set mh_cats = [
+                ('Women & Family Welfare', 'fa-female', '#e91e63', '6 Schemes'),
+                ('Agriculture & Farmers', 'fa-tractor', '#4caf50', '6 Schemes'),
+                ('Youth & Employment', 'fa-briefcase', '#ff9800', '4 Schemes'),
+                ('Education & Scholarships', 'fa-graduation-cap', '#2196f3', '4 Schemes'),
+                ('Senior Citizens & Social Assistance', 'fa-user-clock', '#9c27b0', '4 Schemes'),
+                ('Housing & Infrastructure', 'fa-building', '#607d8b', '4 Schemes')
+            ] %}
+            {% for cat, icon, color, count in mh_cats %}
+            <a href="{{ url_for('schemes', state='Maharashtra', category=cat) }}" class="category-card" style="--accent: {{ color }}">
+                <div class="cat-icon"><i class="fas {{ icon }}"></i></div>
+                <h3>{{ cat }}</h3>
+                <span class="cat-count">{{ count }}</span>
+                <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="how-it-works">
+    <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Three simple steps to find your eligible schemes</p>
+    </div>
+    <div class="steps-grid">
+        <div class="step-card">
+            <div class="step-num">1</div>
+            <i class="fas fa-user-plus step-icon"></i>
+            <h3>Register</h3>
+            <p>Create your profile with personal details like age, income, caste, and occupation.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-num">2</div>
+            <i class="fas fa-search step-icon"></i>
+            <h3>Browse Schemes</h3>
+            <p>Explore schemes by category or state. View details, benefits, and required documents.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-num">3</div>
+            <i class="fas fa-check-circle step-icon"></i>
+            <h3>Check Eligibility</h3>
+            <p>Instantly know if you qualify. Get clear reasons and next steps for each scheme.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

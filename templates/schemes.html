@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Schemes{% endblock %}
+{% block content %}
+<div class="schemes-container">
+    <div class="schemes-header">
+        <h1><i class="fas fa-list"></i> Government Schemes</h1>
+        <p>Browse and check eligibility for Central and Maharashtra Government schemes</p>
+    </div>
+
+    <div class="filter-bar card">
+        <form method="GET" class="filter-form">
+            <div class="filter-group">
+                <label>Government</label>
+                <select name="state" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="Central" {% if state_filter=='Central' %}selected{% endif %}>Central Government</option>
+                    <option value="Maharashtra" {% if state_filter=='Maharashtra' %}selected{% endif %}>Maharashtra</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Category</label>
+                <select name="category" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                        {% if not state_filter or cat['state'] == state_filter %}
+                        <option value="{{ cat['category'] }}" {% if category_filter==cat['category'] %}selected{% endif %}>
+                            {{ cat['category'] }}
+                        </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <a href="{{ url_for('schemes') }}" class="btn btn-outline">Clear Filters</a>
+        </form>
+        <span class="results-count">{{ schemes|length }} scheme(s) found</span>
+    </div>
+
+    {% if schemes %}
+    <div class="schemes-grid">
+        {% for scheme in schemes %}
+        <div class="scheme-card card">
+            <div class="scheme-card-header">
+                <span class="scheme-badge {{ 'badge-central' if scheme['state'] == 'Central' else 'badge-state' }}">
+                    {{ scheme['state'] }}
+                </span>
+                <span class="scheme-category">{{ scheme['category'] }}</span>
+            </div>
+            <h3 class="scheme-name">{{ scheme['name'] }}</h3>
+            <p class="scheme-desc">{{ scheme['description'][:120] }}{% if scheme['description']|length > 120 %}...{% endif %}</p>
+            <div class="scheme-benefits">
+                <i class="fas fa-gift"></i> {{ scheme['benefits'][:80] }}{% if scheme['benefits']|length > 80 %}...{% endif %}
+            </div>
+            <div class="scheme-actions">
+                <a href="{{ url_for('scheme_detail', scheme_id=scheme['id']) }}" class="btn btn-outline btn-sm">
+                    <i class="fas fa-info-circle"></i> Details
+                </a>
+                <a href="{{ url_for('check_eligibility', scheme_id=scheme['id']) }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-check-circle"></i> Check Eligibility
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state card">
+        <i class="fas fa-search"></i>
+        <p>No schemes found for the selected filters.</p>
+        <a href="{{ url_for('schemes') }}" class="btn btn-primary">View All Schemes</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

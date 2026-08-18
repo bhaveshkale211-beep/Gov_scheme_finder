@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Government Schemes Eligibility Finder{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="{{ url_for('home') }}" class="nav-brand">
+            <i class="fas fa-landmark"></i> Gov Schemes Finder
+        </a>
+        <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+            {% if session.user_id %}
+                {% if session.role == 'admin' %}
+                    <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-user"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('schemes') }}"><i class="fas fa-list"></i> Schemes</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout ({{ session.username }})</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li><a href="{{ url_for('signup') }}" class="btn-nav">Register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<main class="main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alerts-container">
+                {% for cat, msg in messages %}
+                    <div class="alert alert-{{ cat }}">{{ msg }} <span class="alert-close" onclick="this.parentElement.remove()">×</span></div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <p>©Government Schemes Eligibility Finder / All rights reserve by Dev. Bhavesh Kale | For more info: <a href="https://www.india.gov.in/my-government/schemes" target="_blank">india.gov.in/schemes</a></p>
+        <p class="disclaimer">Disclaimer: This is an informational platform, Does not trust Blindly. Please verify eligibility with official government sources.</p>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

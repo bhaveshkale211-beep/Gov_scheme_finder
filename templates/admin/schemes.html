@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Manage Schemes{% endblock %}
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-list-alt"></i> Manage Schemes</h1>
+        <div>
+            <a href="{{ url_for('admin_add_scheme') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Scheme</a>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="table-search">
+            <input type="text" id="schemeSearch" placeholder="Search schemes..." onkeyup="filterTable('schemeSearch','schemesTable')">
+        </div>
+        <div class="table-wrap">
+            <table class="data-table" id="schemesTable">
+                <thead>
+                    <tr><th>ID</th><th>Name</th><th>Category</th><th>Government</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    {% for s in schemes %}
+                    <tr>
+                        <td>{{ s['id'] }}</td>
+                        <td>{{ s['name'] }}</td>
+                        <td>{{ s['category'] }}</td>
+                        <td><span class="badge {{ 'badge-central' if s['state']=='Central' else 'badge-state' }}">{{ s['state'] }}</span></td>
+                        <td class="action-btns">
+                            <a href="{{ url_for('scheme_detail', scheme_id=s['id']) }}" class="btn btn-sm btn-outline"><i class="fas fa-eye"></i></a>
+                            <a href="{{ url_for('admin_edit_scheme', scheme_id=s['id']) }}" class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></a>
+                            <a href="{{ url_for('admin_delete_scheme', scheme_id=s['id']) }}" class="btn btn-sm btn-danger"
+                               onclick="return confirm('Delete this scheme?')"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

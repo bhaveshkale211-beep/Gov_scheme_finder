@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}User History{% endblock %}
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-history"></i> Eligibility Check History</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="card">
+        <div class="table-search">
+            <input type="text" id="histSearch" placeholder="Search history..." onkeyup="filterTable('histSearch','histTable')">
+        </div>
+        <div class="table-wrap">
+            <table class="data-table" id="histTable">
+                <thead>
+                    <tr><th>ID</th><th>User</th><th>Scheme</th><th>Result</th><th>Reason</th><th>Date</th></tr>
+                </thead>
+                <tbody>
+                    {% for h in history %}
+                    <tr>
+                        <td>{{ h['id'] }}</td>
+                        <td>{{ h['username'] }}</td>
+                        <td>{{ h['scheme_name'] }}</td>
+                        <td>
+                            {% if h['result'] == 'eligible' %}
+                                <span class="badge badge-success"><i class="fas fa-check"></i> Eligible</span>
+                            {% else %}
+                                <span class="badge badge-danger"><i class="fas fa-times"></i> Not Eligible</span>
+                            {% endif %}
+                        </td>
+                        <td class="reason-cell">{{ h['reason'] or '-' }}</td>
+                        <td>{{ h['checked_at'][:16] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

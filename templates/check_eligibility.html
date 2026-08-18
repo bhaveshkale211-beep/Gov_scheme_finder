@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Check Eligibility - {{ scheme['name'] }}{% endblock %}
+{% block content %}
+<div class="check-container">
+    <div class="check-header card">
+        <h2><i class="fas fa-check-circle"></i> Eligibility Check</h2>
+        <h3>{{ scheme['name'] }}</h3>
+        <span class="scheme-badge {{ 'badge-central' if scheme['state'] == 'Central' else 'badge-state' }}">{{ scheme['state'] }}</span>
+    </div>
+
+    {% if missing_fields %}
+    <div class="card missing-info-card">
+        <div class="missing-header">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Additional Information Required</h3>
+            <p>We need a few more details to check your eligibility for this scheme.</p>
+        </div>
+        <form method="POST" class="missing-form">
+            {% for field in missing_fields %}
+            <div class="form-group">
+                <label>{{ field['label'] }}</label>
+                <input type="text" name="{{ field['field'] }}" required placeholder="Enter {{ field['label'] }}">
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-full">
+                <i class="fas fa-search"></i> Check Eligibility
+            </button>
+        </form>
+    </div>
+    {% else %}
+    <div class="card auto-check-card">
+        <div class="auto-check-info">
+            <i class="fas fa-user-check"></i>
+            <h3>Ready to Check</h3>
+            <p>We have all the information needed from your profile. Click below to check your eligibility.</p>
+        </div>
+        <form method="POST">
+            <button type="submit" class="btn btn-primary btn-lg btn-full">
+                <i class="fas fa-check-circle"></i> Check My Eligibility Now
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="card criteria-preview">
+        <h3><i class="fas fa-clipboard-list"></i> Eligibility Criteria for this Scheme</h3>
+        <ul class="criteria-list">
+            {% for c in criteria %}
+            <li>
+                <i class="fas fa-dot-circle"></i>
+                <strong>{{ c['label'] }}:</strong>
+                {% if c['operator'] == 'eq' %} {{ c['value'] }}
+                {% elif c['operator'] == 'lte' %} ≤ {{ c['value'] }}
+                {% elif c['operator'] == 'gte' %} ≥ {{ c['value'] }}
+                {% elif c['operator'] == 'in' %} One of: {{ c['value'] }}
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

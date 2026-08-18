@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="auth-container auth-container-wide">
+    <div class="auth-card">
+        <div class="auth-header">
+            <i class="fas fa-user-plus auth-logo"></i>
+            <h2>Create Account</h2>
+            <p>Register to find schemes you're eligible for</p>
+        </div>
+        <form method="POST" class="auth-form">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Username *</label>
+                    <input type="text" name="username" required placeholder="Choose a username">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password *</label>
+                    <div class="input-eye">
+                        <input type="password" name="password" id="pwd" required placeholder="Create password">
+                        <span onclick="togglePwd('pwd')"><i class="fas fa-eye"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> Full Name (as per Aadhaar) *</label>
+                    <input type="text" name="full_name" required placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email ID *</label>
+                    <input type="email" name="email" required placeholder="Email address">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-birthday-cake"></i> Age *</label>
+                    <input type="number" name="age" required min="1" max="120" placeholder="Your age">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> Mobile Number *</label>
+                    <input type="tel" name="mobile" required pattern="[0-9]{10}" placeholder="10-digit mobile number">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-rupee-sign"></i> Annual Income (₹) *</label>
+                    <input type="number" name="income" required min="0" placeholder="Annual income in rupees">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-venus-mars"></i> Gender *</label>
+                    <select name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-users"></i> Caste Category *</label>
+                    <select name="caste" required>
+                        <option value="">Select Category</option>
+                        <option value="General">General</option>
+                        <option value="OBC">OBC</option>
+                        <option value="SC">SC</option>
+                        <option value="ST">ST</option>
+                        <option value="NT">NT</option>
+                        <option value="VJNT">VJNT</option>
+                        <option value="EWS">EWS</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-map-marker-alt"></i> State *</label>
+                    <select name="state" required>
+                        <option value="">Select State</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group form-group-full">
+                    <label><i class="fas fa-briefcase"></i> Occupation *</label>
+                    <select name="occupation" required>
+                        <option value="">Select Occupation</option>
+                        <option value="Farmer">Farmer</option>
+                        <option value="Student">Student</option>
+                        <option value="Self-Employed">Self-Employed</option>
+                        <option value="Salaried">Salaried</option>
+                        <option value="Street Vendor">Street Vendor</option>
+                        <option value="Carpenter">Carpenter</option>
+                        <option value="Blacksmith">Blacksmith</option>
+                        <option value="Potter">Potter</option>
+                        <option value="Weaver">Weaver</option>
+                        <option value="Goldsmith">Goldsmith</option>
+                        <option value="Barber">Barber</option>
+                        <option value="Washerman">Washerman</option>
+                        <option value="Tailor">Tailor</option>
+                        <option value="Mason">Mason</option>
+                        <option value="Cobbler">Cobbler</option>
+                        <option value="Unemployed">Unemployed</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Create Account <i class="fas fa-user-plus"></i></button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+    </div>
+</div>
+{% endblock %}

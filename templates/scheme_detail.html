@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}{{ scheme['name'] }}{% endblock %}
+{% block content %}
+<div class="detail-container">
+    <div class="breadcrumb">
+        <a href="{{ url_for('schemes') }}">Schemes</a> <i class="fas fa-chevron-right"></i>
+        <a href="{{ url_for('schemes', state=scheme['state'], category=scheme['category']) }}">{{ scheme['category'] }}</a> <i class="fas fa-chevron-right"></i>
+        <span>{{ scheme['name'] }}</span>
+    </div>
+
+    <div class="detail-header card">
+        <div class="detail-badges">
+            <span class="scheme-badge {{ 'badge-central' if scheme['state'] == 'Central' else 'badge-state' }}">
+                <i class="fas fa-flag"></i> {{ scheme['state'] }} Government
+            </span>
+            <span class="scheme-category">{{ scheme['category'] }}</span>
+        </div>
+        <h1>{{ scheme['name'] }}</h1>
+        <a href="{{ url_for('check_eligibility', scheme_id=scheme['id']) }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-check-circle"></i> Check My Eligibility
+        </a>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-main">
+            <div class="card detail-section">
+                <h3><i class="fas fa-info-circle"></i> About This Scheme</h3>
+                <p>{{ scheme['description'] }}</p>
+            </div>
+            <div class="card detail-section">
+                <h3><i class="fas fa-gift"></i> Benefits</h3>
+                <p>{{ scheme['benefits'] }}</p>
+            </div>
+            <div class="card detail-section">
+                <h3><i class="fas fa-file-alt"></i> Required Documents</h3>
+                <ul class="doc-list">
+                    {% for doc in scheme['documents'].split(',') %}
+                    <li><i class="fas fa-check-circle"></i> {{ doc.strip() }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="detail-sidebar">
+            <div class="card detail-section">
+                <h3><i class="fas fa-clipboard-check"></i> Eligibility Criteria</h3>
+                {% if criteria %}
+                <ul class="criteria-list">
+                    {% for c in criteria %}
+                    <li>
+                        <i class="fas fa-dot-circle"></i>
+                        <strong>{{ c['label'] }}:</strong>
+                        {% if c['operator'] == 'eq' %} Must be {{ c['value'] }}
+                        {% elif c['operator'] == 'lte' %} Must be ≤ {{ c['value'] }}
+                        {% elif c['operator'] == 'gte' %} Must be ≥ {{ c['value'] }}
+                        {% elif c['operator'] == 'lt' %} Must be < {{ c['value'] }}
+                        {% elif c['operator'] == 'gt' %} Must be > {{ c['value'] }}
+                        {% elif c['operator'] == 'in' %} Must be one of: {{ c['value'] }}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Open to all eligible citizens.</p>
+                {% endif %}
+            </div>
+            <div class="card detail-section cta-card">
+                <h3>Ready to Check?</h3>
+                <p>Find out if you qualify for this scheme in seconds.</p>
+                <a href="{{ url_for('check_eligibility', scheme_id=scheme['id']) }}" class="btn btn-primary btn-full">
+                    <i class="fas fa-check-circle"></i> Check Eligibility Now
+                </a>
+                <a href="https://www.india.gov.in/my-government/schemes" target="_blank" class="btn btn-outline btn-full mt-1">
+                    <i class="fas fa-external-link-alt"></i> Official Info
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

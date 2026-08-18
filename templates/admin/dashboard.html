@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+        <span class="admin-badge"><i class="fas fa-shield-alt"></i> Administrator</span>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card stat-blue">
+            <i class="fas fa-users"></i>
+            <div><span class="stat-number">{{ total_users }}</span><span class="stat-label">Total Users</span></div>
+        </div>
+        <div class="stat-card stat-green">
+            <i class="fas fa-list-alt"></i>
+            <div><span class="stat-number">{{ total_schemes }}</span><span class="stat-label">Total Schemes</span></div>
+        </div>
+        <div class="stat-card stat-orange">
+            <i class="fas fa-check-double"></i>
+            <div><span class="stat-number">{{ total_checks }}</span><span class="stat-label">Eligibility Checks</span></div>
+        </div>
+    </div>
+
+    <div class="admin-nav-cards">
+        <a href="{{ url_for('admin_users') }}" class="admin-nav-card">
+            <i class="fas fa-users"></i><span>Manage Users</span>
+        </a>
+        <a href="{{ url_for('admin_schemes') }}" class="admin-nav-card">
+            <i class="fas fa-list-alt"></i><span>Manage Schemes</span>
+        </a>
+        <a href="{{ url_for('admin_add_scheme') }}" class="admin-nav-card">
+            <i class="fas fa-plus-circle"></i><span>Add Scheme</span>
+        </a>
+        <a href="{{ url_for('admin_history') }}" class="admin-nav-card">
+            <i class="fas fa-history"></i><span>User History</span>
+        </a>
+    </div>
+
+    <div class="card">
+        <h3><i class="fas fa-stream"></i> Recent Activity</h3>
+        <div class="activity-table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>User</th><th>Action</th><th>Time</th></tr>
+                </thead>
+                <tbody>
+                    {% for a in recent_activity %}
+                    <tr>
+                        <td><i class="fas fa-user"></i> {{ a['username'] }}</td>
+                        <td>{{ a['action'] }}</td>
+                        <td>{{ a['timestamp'][:16] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

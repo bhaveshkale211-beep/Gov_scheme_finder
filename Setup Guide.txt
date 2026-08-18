@@ -1,0 +1,15 @@
+📦 INSTALLATION
+
+1. Extract the ZIP file
+
+2. Go to terminal
+
+3. Install dependencies:
+   pip install -r requirements.txt
+
+4. Run the app:
+   python app.py
+
+5. 🚀 READY TO EXPLORE! copy and paste below link into your browser
+
+     http://localhost:5000

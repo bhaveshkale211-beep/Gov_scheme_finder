@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Edit' if scheme else 'Add' }} Scheme{% endblock %}
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-{{ 'edit' if scheme else 'plus-circle' }}"></i> {{ 'Edit' if scheme else 'Add' }} Scheme</h1>
+        <a href="{{ url_for('admin_schemes') }}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="card form-card">
+        <form method="POST" class="auth-form">
+            <div class="form-grid-2">
+                <div class="form-group form-group-full">
+                    <label>Scheme Name *</label>
+                    <input type="text" name="name" value="{{ scheme['name'] if scheme else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Government / State *</label>
+                    <select name="state" required>
+                        <option value="Central" {% if scheme and scheme['state']=='Central' %}selected{% endif %}>Central Government</option>
+                        <option value="Maharashtra" {% if scheme and scheme['state']=='Maharashtra' %}selected{% endif %}>Maharashtra</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category *</label>
+                    <input type="text" name="category" value="{{ scheme['category'] if scheme else '' }}" required placeholder="e.g. Healthcare & Insurance">
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Description *</label>
+                    <textarea name="description" rows="3" required>{{ scheme['description'] if scheme else '' }}</textarea>
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Benefits *</label>
+                    <textarea name="benefits" rows="3" required>{{ scheme['benefits'] if scheme else '' }}</textarea>
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Required Documents (comma separated) *</label>
+                    <textarea name="documents" rows="2" required>{{ scheme['documents'] if scheme else '' }}</textarea>
+                </div>
+            </div>
+
+            <div class="criteria-section">
+                <h3><i class="fas fa-clipboard-check"></i> Eligibility Criteria</h3>
+                <p class="hint">Fields: age, income, gender, caste, state, occupation | Operators: eq, lte, gte, lt, gt, in</p>
+                <div id="criteriaList">
+                    {% if criteria %}
+                        {% for c in criteria %}
+                        <div class="criteria-row">
+                            <input type="text" name="crit_field" value="{{ c['field'] }}" placeholder="field (e.g. age)">
+                            <input type="text" name="crit_label" value="{{ c['label'] }}" placeholder="label (e.g. Age)">
+                            <select name="crit_operator">
+                                {% for op in ['eq','lte','gte','lt','gt','in'] %}
+                                <option value="{{ op }}" {% if c['operator']==op %}selected{% endif %}>{{ op }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="text" name="crit_value" value="{{ c['value'] }}" placeholder="value">
+                            <button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" onclick="addCriteria()">
+                    <i class="fas fa-plus"></i> Add Criteria
+                </button>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2">
+                <i class="fas fa-save"></i> {{ 'Update' if scheme else 'Add' }} Scheme
+            </button>
+        </form>
+    </div>
+</div>
+<script>
+function addCriteria() {
+    const div = document.createElement('div');
+    div.className = 'criteria-row';
+    div.innerHTML = `
+        <input type="text" name="crit_field" placeholder="field (e.g. age)">
+        <input type="text" name="crit_label" placeholder="label (e.g. Age)">
+        <select name="crit_operator">
+            <option value="eq">eq</option><option value="lte">lte</option>
+            <option value="gte">gte</option><option value="lt">lt</option>
+            <option value="gt">gt</option><option value="in">in</option>
+        </select>
+        <input type="text" name="crit_value" placeholder="value">
+        <button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+    `;
+    document.getElementById('criteriaList').appendChild(div);
+}
+</script>
+{% endblock %}

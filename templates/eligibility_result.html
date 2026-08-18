@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Eligibility Result - {{ scheme['name'] }}{% endblock %}
+{% block content %}
+<div class="result-container">
+    <div class="result-card card {% if result == 'eligible' %}result-eligible{% else %}result-not-eligible{% endif %}">
+        <div class="result-icon">
+            {% if result == 'eligible' %}
+                <i class="fas fa-check-circle"></i>
+            {% else %}
+                <i class="fas fa-times-circle"></i>
+            {% endif %}
+        </div>
+        <div class="result-content">
+            <h2>{{ scheme['name'] }}</h2>
+            {% if result == 'eligible' %}
+                <h3 class="result-status eligible-text">✅ You are Eligible!</h3>
+                <p>Congratulations! Based on your profile, you qualify for this scheme.</p>
+            {% else %}
+                <h3 class="result-status not-eligible-text">❌ Not Eligible</h3>
+                <p>Based on your profile, you do not currently qualify for this scheme.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if reasons %}
+    <div class="card reasons-card">
+        <h3>
+            {% if result == 'eligible' %}
+                <i class="fas fa-check"></i> All Criteria Met
+            {% else %}
+                <i class="fas fa-exclamation-circle"></i> Reasons for Ineligibility
+            {% endif %}
+        </h3>
+        <ul class="reasons-list">
+            {% for reason in reasons %}
+            <li class="{{ 'reason-fail' if result != 'eligible' else 'reason-pass' }}">
+                <i class="fas {{ 'fa-times' if result != 'eligible' else 'fa-check' }}"></i> {{ reason }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="card disclaimer-card">
+        <h3><i class="fas fa-info-circle"></i> Disclaimer</h3>
+        <p>This result is based on the information provided in your profile. Actual eligibility may vary based on additional criteria set by the government. Please verify with official sources before applying.</p>
+        <a href="https://www.india.gov.in/my-government/schemes" target="_blank" class="btn btn-outline">
+            <i class="fas fa-external-link-alt"></i> Official Government Schemes Portal
+        </a>
+    </div>
+
+    <div class="result-actions">
+        <a href="{{ url_for('scheme_detail', scheme_id=scheme['id']) }}" class="btn btn-outline">
+            <i class="fas fa-info-circle"></i> Scheme Details
+        </a>
+        <a href="{{ url_for('schemes') }}" class="btn btn-primary">
+            <i class="fas fa-search"></i> Browse More Schemes
+        </a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline">
+            <i class="fas fa-history"></i> View History
+        </a>
+    </div>
+</div>
+{% endblock %}

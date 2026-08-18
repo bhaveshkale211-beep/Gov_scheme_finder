@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1><i class="fas fa-user-circle"></i> Welcome, {{ user['full_name'] }}</h1>
+        <a href="{{ url_for('schemes') }}" class="btn btn-primary"><i class="fas fa-search"></i> Browse Schemes</a>
+    </div>
+
+    <div class="profile-history-grid">
+        <div class="profile-card card">
+            <h3><i class="fas fa-id-card"></i> My Profile</h3>
+            <div class="profile-details">
+                <div class="profile-row"><span class="label">Username</span><span>{{ user['username'] }}</span></div>
+                <div class="profile-row"><span class="label">Full Name</span><span>{{ user['full_name'] }}</span></div>
+                <div class="profile-row"><span class="label">Age</span><span>{{ user['age'] }} years</span></div>
+                <div class="profile-row"><span class="label">Gender</span><span>{{ user['gender'] }}</span></div>
+                <div class="profile-row"><span class="label">Annual Income</span><span>₹{{ "{:,.0f}".format(user['income']) }}</span></div>
+                <div class="profile-row"><span class="label">Caste</span><span>{{ user['caste'] }}</span></div>
+                <div class="profile-row"><span class="label">State</span><span>{{ user['state'] }}</span></div>
+                <div class="profile-row"><span class="label">Occupation</span><span>{{ user['occupation'] }}</span></div>
+                <div class="profile-row"><span class="label">Mobile</span><span>{{ user['mobile'] }}</span></div>
+                <div class="profile-row"><span class="label">Email</span><span>{{ user['email'] }}</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-history"></i> Recent Eligibility Checks</h3>
+            {% if history %}
+                <div class="history-list">
+                    {% for h in history %}
+                    <div class="history-item {{ h['result'] }}">
+                        <div class="history-info">
+                            <strong>{{ h['scheme_name'] }}</strong>
+                            <span class="history-meta">{{ h['category'] }} | {{ h['state'] }}</span>
+                            <span class="history-date"><i class="fas fa-clock"></i> {{ h['checked_at'][:16] }}</span>
+                        </div>
+                        <div class="history-result">
+                            {% if h['result'] == 'eligible' %}
+                                <span class="badge badge-success"><i class="fas fa-check"></i> Eligible</span>
+                            {% else %}
+                                <span class="badge badge-danger"><i class="fas fa-times"></i> Not Eligible</span>
+                            {% endif %}
+                        </div>
+                        <a href="{{ url_for('scheme_detail', scheme_id=h['scheme_id']) }}" class="btn btn-sm btn-outline">View</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>No eligibility checks yet.</p>
+                    <a href="{{ url_for('schemes') }}" class="btn btn-primary">Check Schemes</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <h3><i class="fas fa-th-large"></i> Browse by Category</h3>
+        <div class="mini-categories">
+            {% for cat in categories %}
+            <a href="{{ url_for('schemes', state=cat['state'], category=cat['category']) }}" class="mini-cat-chip">
+                {{ cat['state'] }}: {{ cat['category'] }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

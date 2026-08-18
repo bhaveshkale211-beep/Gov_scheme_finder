@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Edit User{% endblock %}
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-user-edit"></i> Edit User: {{ user['username'] }}</h1>
+        <a href="{{ url_for('admin_users') }}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="card form-card">
+        <form method="POST" class="auth-form">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="full_name" value="{{ user['full_name'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" name="age" value="{{ user['age'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Annual Income (₹)</label>
+                    <input type="number" name="income" value="{{ user['income'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Caste</label>
+                    <select name="caste">
+                        {% for c in ['General','OBC','SC','ST','NT','VJNT','EWS'] %}
+                        <option value="{{ c }}" {% if user['caste']==c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender">
+                        {% for g in ['Male','Female','Other'] %}
+                        <option value="{{ g }}" {% if user['gender']==g %}selected{% endif %}>{{ g }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>State</label>
+                    <input type="text" name="state" value="{{ user['state'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Occupation</label>
+                    <input type="text" name="occupation" value="{{ user['occupation'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile</label>
+                    <input type="text" name="mobile" value="{{ user['mobile'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" value="{{ user['email'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select name="role">
+                        <option value="user" {% if user['role']=='user' %}selected{% endif %}>User</option>
+                        <option value="admin" {% if user['role']=='admin' %}selected{% endif %}>Admin</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes <i class="fas fa-save"></i></button>
+        </form>
+    </div>
+</div>
+{% endblock %}
