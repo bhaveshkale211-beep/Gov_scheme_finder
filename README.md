@@ -1,6 +1,6 @@
 # Government Schemes Finder
 
-A web application to help Indian citizens find and check eligibility for Central and Maharashtra State government schemes.
+A web application to help Indian citizens find and check eligibility for Central and Maharashtra State government schemes. 
 
 ---
 
